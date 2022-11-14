@@ -1,0 +1,60 @@
+[
+  {
+    "id": 1,
+    "title": "How old are you?",
+    "options": [
+      {
+        "title": "18 or under",
+        "answer": "Bye",
+        "next": false
+      },
+      {
+        "title": "19 to 29",
+        "answer": false,
+        "next": 2
+      },
+      {
+        "title": "30 to 39",
+        "answer": false,
+        "next": 3
+      },
+      {
+        "title": "40 or above",
+        "answer": "Wow you're still alive...?",
+        "next": false
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Are you attending University right now?",
+    "options": [
+      {
+        "title": "No",
+        "answer": false,
+        "next": 3
+      },
+      {
+        "title": "Yes",
+        "answer": "Good for you!",
+        "next": false
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Are you currently working?",
+    "options": [
+      {
+        "title": "No",
+        "answer": "Hm... looser",
+        "next": false
+      },
+      {
+        "title": "Yes",
+        "answer": "Can you borrow 100$? I'll give it back tomorrow morning!",
+        "next": false
+      }
+    ]
+  }
+]
