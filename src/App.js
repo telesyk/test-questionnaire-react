@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { fetchJson } from "./helpers/index";
 import Button from "./components/Button";
 import TestContainer from "./components/TestContainer";
+import { OptionContext } from "./context";
 import { getQuestion } from "./helpers/index";
 import "./styles.css";
+
 
 function App({ conf }) {
   const { dataPath } = conf;
@@ -20,6 +22,10 @@ function App({ conf }) {
     setActiveTest((prevState) => !prevState);
     setActiveQuestionId(1);
     setActiveQuestion(getQuestion(data, 1));
+  };
+
+   const onOptionChange = (id) => {
+    console.log('next question', id);
   };
 
   const isStartButton = data.length && !activeTest;
@@ -39,9 +45,13 @@ function App({ conf }) {
               </div>
             )
           }
-          {
-            activeQuestionId > 0 && activeTest && <TestContainer question={activeQuestion} />
-          }
+          <OptionContext.Provider value={activeQuestionId}>
+            <div>
+              {
+                activeQuestionId > 0 && activeTest && <TestContainer question={activeQuestion} />
+              }
+            </div>
+          </OptionContext.Provider>
         </div>
       </div>
     </div>

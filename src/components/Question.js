@@ -1,7 +1,10 @@
-import React from 'react'
+import { useContext } from 'react';
+import { OptionContext } from '../context';
 
 function Option({checked, title, id, handleChange}) {
   const isChecked = checked || false;
+  const activeQuestionId = useContext(OptionContext);
+  console.log(activeQuestionId);
 
   return (
     <div>
@@ -18,13 +21,14 @@ function Option({checked, title, id, handleChange}) {
   );
 }
 
-function Question({ title, options, classname }) {
+function Question({ title, options, classname, handleQuestionOption }) {
+
   return (
     <div className={classname}>
       <h2 className="text-xl py-3 text-center">{title}</h2>
       {
         options.length &&
-        options.map((option, index) => <Option key={index} id={index} title={option.title} />)
+        options.map((option, index) => <Option key={index} id={index} title={option.title} handleChange={handleQuestionOption} />)
       }
     </div>
   )
