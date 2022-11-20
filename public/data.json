@@ -4,24 +4,32 @@
     "title": "How old are you?",
     "options": [
       {
+        "id": 1,
         "title": "18 or under",
         "answer": "Bye",
-        "next": false
+        "next": false,
+        "type": "radio"
       },
       {
+        "id": 2,
         "title": "19 to 29",
         "answer": false,
-        "next": 2
+        "next": 2,
+        "type": "radio"
       },
       {
+        "id": 3,
         "title": "30 to 39",
         "answer": false,
-        "next": 3
+        "next": 3,
+        "type": "radio"
       },
       {
+        "id": 4,
         "title": "40 or above",
         "answer": "Wow you're still alive...?",
-        "next": false
+        "next": false,
+        "type": "radio"
       }
     ]
   },
@@ -30,14 +38,18 @@
     "title": "Are you attending University right now?",
     "options": [
       {
+        "id": 1,
         "title": "No",
         "answer": false,
-        "next": 3
+        "next": 3,
+        "type": "radio"
       },
       {
+        "id": 2,
         "title": "Yes",
         "answer": "Good for you!",
-        "next": false
+        "next": false,
+        "type": "radio"
       }
     ]
   },
@@ -46,14 +58,18 @@
     "title": "Are you currently working?",
     "options": [
       {
+        "id": 1,
         "title": "No",
         "answer": "Hm... looser",
-        "next": false
+        "next": false,
+        "type": "radio"
       },
       {
+        "id": 2,
         "title": "Yes",
         "answer": "Can you borrow 100$? I'll give it back tomorrow morning!",
-        "next": false
+        "next": false,
+        "type": "radio"
       }
     ]
   }

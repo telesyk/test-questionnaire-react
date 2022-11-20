@@ -1,38 +1,53 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
+import Option from './Option';
 import { OptionContext } from '../context';
 
-function Option({checked, title, id, handleChange}) {
-  const isChecked = checked || false;
-  const activeQuestionId = useContext(OptionContext);
-  console.log(activeQuestionId);
-
-  return (
-    <div>
-      <input 
-        id={`radio-${id}`} 
-        className="peer/draft form-radio mr-2 mb-0.5 border-slate-300 text-sky-400 focus:ring-sky-300" 
-        type="radio" 
-        name={`field-name-${id}`} 
-        checked={isChecked}
-        onChange={handleChange}
-      />
-      <label className="peer-checked/draft:text-sky-500 font-medium" for={`radio-${id}`}>{title}</label>
-    </div>
-  );
-}
-
-function Question({ title, options, classname, handleQuestionOption }) {
+function Question({
+  title,
+  options,
+  classname,
+  onOptionChange,
+}) {
+  const { currentQuestionId } = useContext(OptionContext);
+  // eslint-disable-next-line
+  console.log('currentQuestionId', currentQuestionId);
 
   return (
     <div className={classname}>
       <h2 className="text-xl py-3 text-center">{title}</h2>
       {
-        options.length &&
-        options.map((option, index) => <Option key={index} id={index} title={option.title} handleChange={handleQuestionOption} />)
+        options.length
+        && options.map((option) => (
+          <Option
+            key={option.id}
+            id={`radio-${option.id}`}
+            type="radio"
+            title={option.title}
+            name={`field-name-${option.id}`}
+            isChecked={option.checked || false}
+            handleChange={() => onOptionChange(option.id)}
+          />
+        ))
       }
     </div>
-  )
+  );
 }
 
-export default Question;
+Question.propTypes = {
+  title: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    type: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    checked: PropTypes.bool,
+  })).isRequired,
+  classname: PropTypes.string,
+  onOptionChange: PropTypes.func.isRequired,
+};
 
+Question.defaultProps = {
+  classname: '',
+};
+
+export default Question;

@@ -1,32 +1,34 @@
-import { useState, useEffect, createContext } from "react";
-import { fetchJson } from "./helpers/index";
-import Button from "./components/Button";
-import TestContainer from "./components/TestContainer";
-import { OptionContext } from "./context";
-import { getQuestion } from "./helpers/index";
-import "./styles.css";
-
+import React, { useState, useEffect, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { fetchJson, getQuestion } from './helpers/index';
+import Button from './components/Button';
+import QuestionContainer from './components/QuestionContainer';
+import { OptionContext } from './context';
+import './styles.css';
 
 function App({ conf }) {
   const { dataPath } = conf;
   const [data, setData] = useState([]);
   const [activeTest, setActiveTest] = useState(false);
-  const [activeQuestion, setActiveQuestion] = useState({});
-  const [activeQuestionId, setActiveQuestionId] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState({});
+  const [currentQuestionId, setCurrentQuestionId] = useState(0);
 
   useEffect(() => {
-    fetchJson(dataPath).then((data) => setData(data));
+    fetchJson(dataPath).then((appData) => setData(appData));
   }, [dataPath]);
 
   const onStartTest = () => {
     setActiveTest((prevState) => !prevState);
-    setActiveQuestionId(1);
-    setActiveQuestion(getQuestion(data, 1));
+    setCurrentQuestionId(1);
+    setCurrentQuestion(getQuestion(data, 1));
   };
 
-   const onOptionChange = (id) => {
-    console.log('next question', id);
+  const onNextQuestion = () => {
+    // eslint-disable-next-line
+    console.log('next question');
   };
+
+  const optionsValue = useMemo(() => ({ currentQuestionId, currentQuestion }));
 
   const isStartButton = data.length && !activeTest;
 
@@ -45,10 +47,17 @@ function App({ conf }) {
               </div>
             )
           }
-          <OptionContext.Provider value={activeQuestionId}>
+          <OptionContext.Provider value={optionsValue}>
             <div>
               {
-                activeQuestionId > 0 && activeTest && <TestContainer question={activeQuestion} />
+                currentQuestionId > 0
+                && activeTest
+                && (
+                  <QuestionContainer
+                    question={currentQuestion}
+                    onNext={onNextQuestion}
+                  />
+                )
               }
             </div>
           </OptionContext.Provider>
@@ -57,5 +66,11 @@ function App({ conf }) {
     </div>
   );
 }
+
+App.propTypes = {
+  conf: PropTypes.shape({
+    dataPath: PropTypes.string,
+  }).isRequired,
+};
 
 export default App;
