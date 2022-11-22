@@ -6,29 +6,29 @@
       {
         "id": 1,
         "title": "18 or under",
-        "answer": "Bye",
-        "next": false,
+        "answer": "You'r too young. Bye",
+        "next": null,
         "type": "radio"
       },
       {
         "id": 2,
         "title": "19 to 29",
-        "answer": false,
+        "answer": null,
         "next": 2,
         "type": "radio"
       },
       {
         "id": 3,
         "title": "30 to 39",
-        "answer": false,
+        "answer": null,
         "next": 3,
         "type": "radio"
       },
       {
         "id": 4,
         "title": "40 or above",
-        "answer": "Wow you're still alive...?",
-        "next": false,
+        "answer": "Wow, you're still alive...?",
+        "next": null,
         "type": "radio"
       }
     ]
@@ -40,7 +40,7 @@
       {
         "id": 1,
         "title": "No",
-        "answer": false,
+        "answer": null,
         "next": 3,
         "type": "radio"
       },
@@ -48,7 +48,7 @@
         "id": 2,
         "title": "Yes",
         "answer": "Good for you!",
-        "next": false,
+        "next": null,
         "type": "radio"
       }
     ]
@@ -60,15 +60,15 @@
       {
         "id": 1,
         "title": "No",
-        "answer": "Hm... looser",
-        "next": false,
+        "answer": "Oppss... looser",
+        "next": null,
         "type": "radio"
       },
       {
         "id": 2,
         "title": "Yes",
         "answer": "Can you borrow 100$? I'll give it back tomorrow morning!",
-        "next": false,
+        "next": null,
         "type": "radio"
       }
     ]

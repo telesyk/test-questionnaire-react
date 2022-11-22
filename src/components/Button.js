@@ -9,7 +9,7 @@ function Button({ children, handleClick, isActive }) {
       onClick={handleClick}
       disabled={!isActive}
     >
-      <span className="">{children}</span>
+      <span className="mr-1">{children}</span>
       <span className="text-indigo-200" aria-hidden="true">
         &rarr;
       </span>

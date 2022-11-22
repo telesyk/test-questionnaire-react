@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Option from './Option';
-import { OptionContext } from '../context';
 
 function Question({
   title,
@@ -9,10 +8,6 @@ function Question({
   classname,
   onOptionChange,
 }) {
-  const { currentQuestionId } = useContext(OptionContext);
-  // eslint-disable-next-line
-  console.log('currentQuestionId', currentQuestionId);
-
   return (
     <div className={classname}>
       <h2 className="text-xl py-3 text-center">{title}</h2>

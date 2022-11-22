@@ -1,66 +1,93 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { fetchJson, getQuestion } from './helpers/index';
 import Button from './components/Button';
 import QuestionContainer from './components/QuestionContainer';
-import { OptionContext } from './context';
 import './styles.css';
+
+const INIT_QUESTION_ID = 0;
+const START_QUESTION_ID = 1;
 
 function App({ conf }) {
   const { dataPath } = conf;
   const [data, setData] = useState([]);
-  const [activeTest, setActiveTest] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState({});
-  const [currentQuestionId, setCurrentQuestionId] = useState(0);
+  const [isActiveTest, setIsActiveTest] = useState(false);
+  const [isFinishedTest, setIsFinishedTest] = useState(false);
+  const [lastAnswer, setLastAnswer] = useState(null);
+  const [activeQuestion, setActiveQuestion] = useState({});
+  const [activeQuestionId, setActiveQuestionId] = useState(INIT_QUESTION_ID);
 
   useEffect(() => {
     fetchJson(dataPath).then((appData) => setData(appData));
   }, [dataPath]);
 
-  const onStartTest = () => {
-    setActiveTest((prevState) => !prevState);
-    setCurrentQuestionId(1);
-    setCurrentQuestion(getQuestion(data, 1));
+  const onInitTest = () => {
+    setIsActiveTest((prevState) => !prevState);
+    setIsFinishedTest(false);
+    setActiveQuestion(getQuestion(data, START_QUESTION_ID));
+    setActiveQuestionId(START_QUESTION_ID);
   };
 
-  const onNextQuestion = () => {
-    // eslint-disable-next-line
-    console.log('next question');
+  const onFinishTest = () => {
+    setIsActiveTest((prevState) => !prevState);
+    setIsFinishedTest(false);
+    setActiveQuestion({});
+    setActiveQuestionId(INIT_QUESTION_ID);
   };
 
-  const optionsValue = useMemo(() => ({ currentQuestionId, currentQuestion }));
+  const onNextQuestion = (option) => {
+    const { next, answer } = option;
+    const isAnswerString = typeof answer === 'string';
+    const isNextNumber = typeof next === 'number';
 
-  const isStartButton = data.length && !activeTest;
+    if (isNextNumber && !isAnswerString) {
+      setActiveQuestion(getQuestion(data, next));
+      return setActiveQuestionId(next);
+    }
+
+    setIsFinishedTest(true);
+    setLastAnswer(answer);
+    return setActiveQuestionId(INIT_QUESTION_ID);
+  };
+
+  const isStartButton = data.length && !isActiveTest;
+  const showQuestion = activeQuestionId > INIT_QUESTION_ID && isActiveTest;
 
   return (
     <div className="h-screen py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-      <div className="container mx-auto px-5">
-        <h1 className="text-3xl py-3 text-center">Questionnaire</h1>
-        <div className="py-5">
-          {
-            !data.length && <p className="text-center">No data loaded</p>
-          }
-          {
-            isStartButton && (
-              <div className="py-3 text-center">
-                <Button handleClick={onStartTest}>Start test</Button>
-              </div>
-            )
-          }
-          <OptionContext.Provider value={optionsValue}>
-            <div>
+      <div className="container h-screen mx-auto px-5 flex items-center justify-center">
+        <div className="border border-2 rounded-lg py-5 basis-full">
+          <h1 className="text-3xl py-3 text-center">Questionnaire</h1>
+          <div className="py-5 mt-5">
+            {
+              !data.length && <p className="text-center">No data loaded</p>
+            }
+            {
+              isStartButton && (
+                <div className="py-3 text-center">
+                  <Button handleClick={onInitTest}>Start test</Button>
+                </div>
+              )
+            }
+            <div className="px-5">
               {
-                currentQuestionId > 0
-                && activeTest
-                && (
+                showQuestion && (
                   <QuestionContainer
-                    question={currentQuestion}
+                    question={activeQuestion}
                     onNext={onNextQuestion}
                   />
                 )
               }
+              {
+                isFinishedTest && !showQuestion && (
+                  <div className="flex flex-col justify-center items-center text-center">
+                    <div className="mb-5">{lastAnswer}</div>
+                    <Button handleClick={onFinishTest}>Finish</Button>
+                  </div>
+                )
+              }
             </div>
-          </OptionContext.Provider>
+          </div>
         </div>
       </div>
     </div>

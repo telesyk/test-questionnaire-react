@@ -2,32 +2,29 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button';
 import Question from './Question';
+import { getActiveOption, setOptionCheck } from '../helpers';
 
 function QuestionContainer({ question, onNext }) {
   const { title, options } = question;
   const [currentOptions, setCurrentOptions] = useState(options);
+  const [activeOption, setActiveOption] = useState(null);
   const [isOptionSelected, setIsOptionSelected] = useState(false);
   const [isActiveBtnNext, setIsActiveBtnNext] = useState(false);
 
-  const handleOptionChange = (id) => {
-    // eslint-disable-next-line
-    // console.log('currentOption id', id);
-    setIsOptionSelected(true);
-    setCurrentOptions((prevOptions) => prevOptions.map((option) => {
-      if (id !== option.id) {
-        // eslint-disable-next-line
-        option.checked = false;
-      } else {
-        // eslint-disable-next-line
-        option.checked = true;
-      }
-      return option;
-    }));
-  };
-
+  useEffect(() => setCurrentOptions(
+    setOptionCheck(options, null),
+  ), [question]);
   useEffect(() => {
     setIsActiveBtnNext((prevState) => isOptionSelected && !prevState);
   }, [isOptionSelected]);
+
+  const handleOptionChange = (id) => {
+    setIsOptionSelected(true);
+    setCurrentOptions((prevOptions) => setOptionCheck(prevOptions, id));
+    setActiveOption(getActiveOption(options, id));
+  };
+
+  const handleNext = () => onNext(activeOption);
 
   return (
     <>
@@ -37,7 +34,7 @@ function QuestionContainer({ question, onNext }) {
         options={currentOptions}
         onOptionChange={handleOptionChange}
       />
-      <Button handleClick={onNext} isActive={isActiveBtnNext}>Next</Button>
+      <Button handleClick={handleNext} isActive={isActiveBtnNext}>Next</Button>
     </>
   );
 }

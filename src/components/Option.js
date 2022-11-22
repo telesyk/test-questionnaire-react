@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { OptionContext } from '../context';
 
 function Option({
   type,
@@ -10,10 +9,6 @@ function Option({
   id,
   handleChange,
 }) {
-  // const { currentQuestionId } = useContext(OptionContext);
-  // // eslint-disable-next-line
-  // console.log(currentQuestionId);
-
   return (
     <div>
       <input
